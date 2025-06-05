@@ -6,12 +6,8 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -24,16 +20,29 @@ repositories {
 }
 
 dependencies {
+    // Основная библиотека Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
 
-tasks.named('test') {
-    useJUnitPlatform()
+    // Лямбда выражения и упрощенная работа с аннотациями
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Удобства для разработки: авто-рестарты, H2 консоль
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Драйвер PostgreSQL
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Библиотека для тестов
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // Поддержка реактивных вебсокетов (опционально)
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    test {
+        useJUnitPlatform()
+    }
 }
